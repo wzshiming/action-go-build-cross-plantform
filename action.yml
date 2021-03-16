@@ -1,0 +1,13 @@
+name: 'Go Build Cross Platform'
+description: 'Build Cross Platform'
+author: 'wzshiming'
+inputs:
+  BASENAME:
+    description: './cmd/BASENAME'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - run: ${{ github.action_path }}/build-cross-plantform.sh
+      shell: bash
