@@ -50,8 +50,6 @@ for OS in ${SRC_BUILD_PLATFORMS[@]}; do
     fi
     NAME="${SRC_ROOT}/${RELEASE}/${NAME}"
     echo "Building to ${NAME} for ${OS}/${ARCH}"
-    GOARCH=${ARCH} GOOS=${OS} CGO_ENABLED=0 ${GO_BUILD_CMD} -ldflags "${GO_BUILD_LDFLAGS}" -o "${NAME}" ./cmd/${BASENAME} &&
-      shasum -a 256 "${NAME}" >"${NAME}".sha256 ||
-      continue
+    GOARCH=${ARCH} GOOS=${OS} CGO_ENABLED=0 ${GO_BUILD_CMD} -ldflags "${GO_BUILD_LDFLAGS}" -o "${NAME}" ./cmd/${BASENAME} || true
   done
 done
