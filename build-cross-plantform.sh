@@ -25,6 +25,10 @@ if [[ -z "${GO_BUILD_FLAGS}" ]]; then
   GO_BUILD_FLAGS="-a -installsuffix cgo"
 fi
 
+if [[ -z "${CGO_ENABLED}" ]]; then
+  CGO_ENABLED="0"
+fi
+
 GO_DIST_LIST=$(go tool dist list)
 GO_BUILD_CMD="go build ${GO_BUILD_FLAGS} "
 GO_BUILD_LDFLAGS="-s -w -X main.commitHash=${COMMIT_HASH} -X main.buildDate=${DATE} -X main.version=${VERSION} -X main.flagImportDuringSolve=${IMPORT_DURING_SOLVE}"
@@ -50,6 +54,6 @@ for OS in ${SRC_BUILD_PLATFORMS[@]}; do
     fi
     NAME="${SRC_ROOT}/${RELEASE}/${NAME}"
     echo "Building to ${NAME} for ${OS}/${ARCH}"
-    GOARCH=${ARCH} GOOS=${OS} CGO_ENABLED=0 ${GO_BUILD_CMD} -ldflags "${GO_BUILD_LDFLAGS}" -o "${NAME}" ./cmd/${BASENAME} || true
+    GOARCH=${ARCH} GOOS=${OS} CGO_ENABLED=${CGO_ENABLED} ${GO_BUILD_CMD} -ldflags "${GO_BUILD_LDFLAGS}" -o "${NAME}" ./cmd/${BASENAME} || true
   done
 done
